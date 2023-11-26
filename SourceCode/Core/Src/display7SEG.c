@@ -103,11 +103,11 @@ void display7SEG(int num) {
 		}
 }
 
-void updateBuffer(int num1,int num2) {
-	led_buffer[0]= num1 /10;
-	led_buffer[1]= num1 %10;
-	led_buffer[2]= num2 /10;
-	led_buffer[3]= num2 %10;
+void updateBuffer() {
+	led_buffer[0]= time1 /10;
+	led_buffer[1]= time1 %10;
+	led_buffer[2]= time2 /10;
+	led_buffer[3]= time2 %10;
 }
 void update7SEG(int index){
     switch (index){

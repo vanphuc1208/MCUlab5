@@ -9,5 +9,5 @@
 #define INC_FSM_NORMAL_STATE_H_
 
 void normalState(void);
-
+void manState(void);
 #endif /* INC_FSM_NORMAL_STATE_H_ */

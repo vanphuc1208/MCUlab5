@@ -10,5 +10,5 @@
 
 
 void update7SEG(int index);
-void updateBuffer(int num1,int num2);
+void updateBuffer();
 #endif /* INC_DISPLAY7SEG_H_ */
