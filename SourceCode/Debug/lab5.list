@@ -1634,7 +1634,7 @@ void button_reading(void){
 							buttonTimeOut[i] = DURATION_FOR_AUTO_INCREASING;
  8000c50:	4a19      	ldr	r2, [pc, #100]	; (8000cb8 <button_reading+0x11c>)
  8000c52:	687b      	ldr	r3, [r7, #4]
- 8000c54:	21c8      	movs	r1, #200	; 0xc8
+ 8000c54:	2164      	movs	r1, #100	; 0x64
  8000c56:	f842 1023 	str.w	r1, [r2, r3, lsl #2]
  8000c5a:	e013      	b.n	8000c84 <button_reading+0xe8>
 							}
