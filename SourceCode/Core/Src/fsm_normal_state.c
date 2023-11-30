@@ -12,41 +12,54 @@ void increase() {
 	if(time1>99) time1=1;
 }
 
-void normalState(void) {//called every second
+void normalState(void) {
 	switch(status) {
 	case INIT:
 		clearAllLed();
 		status=RedGreen;
+		setTimer1(timeGreen*100);
+		setTimer2(1);
 		time1=timeRed;
 		time2=timeGreen;
 		break;
 	case RedGreen:
 		displayRed1();
 		displayGreen2();
-		//update time
-		time1--;
-		time2--;
-		if(time2==0) {// transit state
+		if(timer2_flag==1) {// update time
+			setTimer2(100);
+			time1--;
+			time2--;
+		}
+		if(timer1_flag==1) {// transit state
 			status=RedAm;
+			setTimer1(timeYellow*100);
+			setTimer2(1);
 			time1=timeYellow;
 			time2=timeYellow;
 		}
+
 		if(is_button_pressed(0)) {
 			status=ManRed;
 			time1=timeRed;
 			time2=2;
 			clearAllLed();
+			setTimer5(25);
 		}
 
 		break;
 	case RedAm:
 		displayRed1();
 		displayYellow2();
-		//update time
-		time1--;
-		time2--;
-		if(time1==0) { //transit state
+		if(timer2_flag==1) {// update time
+			setTimer2(100);
+			time1--;
+			time2--;
+		}
+
+		if(timer1_flag==1) { //transit state
 			status=GreenRed;
+			setTimer1(timeGreen*100);
+			setTimer2(1);
 			time1=timeGreen;
 			time2=timeRed;
 		}
@@ -56,17 +69,23 @@ void normalState(void) {//called every second
 			time1=timeRed;
 			time2=2;
 			clearAllLed();
+			setTimer5(25);
 		}
 
 		break;
 	case GreenRed:
 		displayGreen1();
 		displayRed2();
-		//update time
-		time1--;
-		time2--;
-		if(time1==0) { //transit state
+		if(timer2_flag==1) {// update time
+			setTimer2(100);
+			time1--;
+			time2--;
+		}
+
+		if(timer1_flag==1) { //transit state
 			status=AmRed;
+			setTimer1(timeYellow*100);
+			setTimer2(1);
 			time1=timeYellow;
 			time2=timeYellow;
 		}
@@ -76,16 +95,22 @@ void normalState(void) {//called every second
 			time1=timeRed;
 			time2=2;
 			clearAllLed();
+			setTimer5(25);
 		}
 		break;
 	case AmRed:
 		displayYellow1();
 		displayRed2();
-		//update time
-		time1--;
-		time2--;
-		if(time1==0) { //transit state
+		if(timer2_flag==1) {// update time
+			setTimer2(100);
+			time1--;
+			time2--;
+		}
+
+		if(timer1_flag==1) { //transit state
 			status=RedGreen;
+			setTimer1(timeGreen*100);
+			setTimer2(1);
 			time1=timeRed;
 			time2=timeGreen;
 		}
@@ -95,76 +120,77 @@ void normalState(void) {//called every second
 			time1=timeRed;
 			time2=2;
 			clearAllLed();
+			setTimer5(25);
+		}
+		break;
+	case ManRed:
+		if(timer5_flag==1) {
+			setTimer5(25);
+			toggleRed();
+		}
+		if(is_button_pressed(1)) {
+			increase();
+		}
+		if(is_button_pressed(2)) {
+			timeRed=time1;
+			timeGreen=timeRed-timeYellow;
+
+		}
+		if(is_button_pressed(0)) {
+			status=ManAm;
+			time1=timeYellow;
+			time2=3;
+			clearAllLed();
+			setTimer5(25);
+		}
+		break;
+	case ManAm:
+		if(timer5_flag==1) {
+			setTimer5(25);
+			toggleYellow();
+		}
+		if(is_button_pressed(1)) {
+			increase();
+		}
+		if(is_button_pressed(2)) {
+			timeYellow=time1;
+			if(timeYellow >=timeRed) {
+				timeRed=60;
+			}
+			timeGreen=timeRed-timeYellow;
+		}
+		if(is_button_pressed(0)) {
+			status=ManGreen;
+			time1=timeGreen;
+			time2=4;
+			clearAllLed();
+			setTimer5(25);
+		}
+		break;
+	case ManGreen:
+		if(timer5_flag==1) {
+			setTimer5(25);
+			toggleGreen();
+		}
+		if(is_button_pressed(1)) {
+			increase();
+		}
+		if(is_button_pressed(2)) {
+			timeGreen=time1;
+			if(timeGreen >=timeRed) {
+				timeRed=60;
+			}
+			timeYellow=timeRed-timeGreen;
+		}
+		if(is_button_pressed(0)) {
+			status=RedGreen;
+			setTimer1(timeGreen*100);
+			setTimer2(1);
+			time1=timeRed;
+			time2=timeGreen;
 		}
 		break;
 	default:
 		break;
 	}
 }
-
-void manState(void) { //called every 0.25s
-	switch(status) {
-	case ManRed:
-				toggleRed();
-
-			if(is_button_pressed(1)) {
-				increase();
-			}
-			if(is_button_pressed(2)) {
-				timeRed=time1;
-				timeGreen=timeRed-timeYellow;
-
-			}
-			if(is_button_pressed(0)) {
-				status=ManAm;
-				time1=timeYellow;
-				time2=3;
-				clearAllLed();
-			}
-			break;
-		case ManAm:
-
-
-				toggleYellow();
-			if(is_button_pressed(1)) {
-				increase();
-			}
-			if(is_button_pressed(2)) {
-				timeYellow=time1;
-				if(timeYellow >=timeRed) {
-					timeRed=60;
-				}
-				timeGreen=timeRed-timeYellow;
-			}
-			if(is_button_pressed(0)) {
-				status=ManGreen;
-				time1=timeGreen;
-				time2=4;
-				clearAllLed();
-			}
-			break;
-		case ManGreen:
-
-				toggleGreen();
-			if(is_button_pressed(1)) {
-				increase();
-			}
-			if(is_button_pressed(2)) {
-				timeGreen=time1;
-				if(timeGreen >=timeRed) {
-					timeRed=60;
-				}
-				timeYellow=timeRed-timeGreen;
-			}
-			if(is_button_pressed(0)) {
-				status=RedGreen;
-				time1=timeRed;
-				time2=timeGreen;
-			}
-			break;
-		default:
-			break;
-	}
-
-}
-

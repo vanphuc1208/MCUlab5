@@ -25,6 +25,7 @@ struct Node{
 
 struct Node* head=NULL;
 
+
 void SCH_Init(void) {
 	head=NULL;
 }
@@ -111,4 +112,5 @@ void SCH_Dispatch_Tasks(void) {
 			SCH_Add_Task(newTask.pTask, newTask.Period, newTask.Period);
 		}
 	}
+	 HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
 }

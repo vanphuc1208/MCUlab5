@@ -60,6 +60,7 @@ static void MX_TIM2_Init(void);
 void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim ) {
 	button_reading();
 	SCH_Update();
+	//timerRun();
 }
 //void LED_Blink(){
 //	HAL_GPIO_TogglePin(LED_Red1_GPIO_Port, LED_Red1_Pin);
@@ -68,11 +69,7 @@ void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim ) {
 //void LED_Blink2(){
 //	HAL_GPIO_TogglePin(LED_Yellow1_GPIO_Port, LED_Yellow1_Pin);
 //}
-int led_idx=0;
-void control7Seg() {
-	update7SEG(led_idx++);
-	if(led_idx>=4) led_idx=0;
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -110,26 +107,25 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  setTimer3(25);
-//  setTimer4(50);
-//  int led_idx=0;
+  setTimer3(25);
+  setTimer4(50);
 //  SCH_Add_Task(LED_Blink, 0, 100);
 //  SCH_Add_Task(LED_Blink2, 1, 200);
-  SCH_Add_Task(updateBuffer, 10,10);
-  SCH_Add_Task(control7Seg,25,25);
-  SCH_Add_Task(normalState,0,100);
-  SCH_Add_Task(manState,0,25);
+  int led_idx=0;
+  SCH_Init();
+  SCH_Add_Task(normalState,0,1);
+  SCH_Add_Task(timerRun,0,1);
   while (1)
   {
-//	  if(timer3_flag==1) {
-//	   	 setTimer3(25);
-//	   	 update7SEG(led_idx++);
-//	   	 if(led_idx>=4) led_idx=0;
-//	   	}
-//	  if(timer4_flag==1) {
-//		  updateBuffer(time1,time2);
-//		  setTimer4(50);
-//	  }
+	  if(timer3_flag==1) {
+	   	 setTimer3(25);
+	   	 update7SEG(led_idx++);
+	   	 if(led_idx>=4) led_idx=0;
+	   	}
+	  if(timer4_flag==1) {
+		  updateBuffer();
+		  setTimer4(50);
+	  }
 //	 normalState();
 	  SCH_Dispatch_Tasks();
 
