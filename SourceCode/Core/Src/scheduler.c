@@ -99,6 +99,7 @@ void SCH_Update(void) {
 	}
 	else {
 		head->data.Delay--;
+		if(head->data.Delay <=0) head->data.RunMe=1;
 	}
 }
 
